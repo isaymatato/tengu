@@ -81,15 +81,19 @@ List of currently available modules:
 ###Methods:
 
 **T.stackTrace()**
+
 Returns the stack trace as an object.
 
 **T.lineNumber()**
+
 Returns the current line number in code.
 
 **T.log(msg,[msgs])**
+
 For now this just wraps console.log.  May add other features later.
 
 **T.logMultiple(nTimesToLog, msg)**
+
 Log message a fixed number of times (use in continuous loops to avoid msg spam)
 
 Example:
@@ -107,9 +111,11 @@ Output will be:
 (then stops, instead of logging a bazillion times)
 
 **T.logOnce(msg,[msgs])**
+
 Wraps console.log.  Works similar to 'logMultiple', but only logs once
 
 **T.safeWrap(func, [onError], [onNotAFunc], [onFinally])**
+
 Safely wrap a function with error callbacks
 Set onNotAFunc to null to ignore
 
