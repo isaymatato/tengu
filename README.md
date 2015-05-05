@@ -40,39 +40,39 @@ Tengu(['util','debug','random'],function(T) {
 ###Modules
 List of currently available modules:
 
-*afk
-*appcache
-*canvas
-*canvasmanip
-*cookie
-*date
-*debug
-*dom
-*draw
-*fileio
-*fingerprint
-*fps
-*fullscreen
-*geoloc
-*graph
-*gui
-*image
-*imagedata
-*math
-*namegen
-*physics
-*random
-*regression
-*sparkline
-*stream
-*string
-*tween
-*util
-*validation
-*websocket
-*webstorage
-*webworker
-*xhr
+- afk
+- appcache
+- canvas
+- canvasmanip
+- cookie
+- date
+- debug
+- dom
+- draw
+- fileio
+- fingerprint
+- fps
+- fullscreen
+- geoloc
+- graph
+- gui
+- image
+- imagedata
+- math
+- namegen
+- physics
+- random
+- regression
+- sparkline
+- stream
+- string
+- tween
+- util
+- validation
+- websocket
+- webstorage
+- webworker
+- xhr
 
 
 
