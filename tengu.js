@@ -1,59 +1,61 @@
 /*!
  *  Tengu JS
  *
- *  (c) 2014, Mateo Williford of Tengu
- *  tengujs.com
+ *  (c) 2014, Mateo Williford
  *
  */
-var VERSION_NUMBER = "3.00012";
+var VERSION_NUMBER = "4.00000";
 console.log("Loading Tengu v" + VERSION_NUMBER);
 
-var ISNODE,ROOT;
+
+//  Node.js or Browser Mode check//////////////////////////////////////////////////////////////////////////////////////////////////
+
 //Check if running in node or browser
+var ISNODE,ROOT;
+
 (function () {
-
-    // Establish the root object, `window` in the browser, or `global` on the server.
+    // Root is 'window' in browser, 'global' in server
     ROOT = this; 
+    ISNODE = false;
 
-    // Create a refeence to this
+    //This ref
     var _ = new Object();
-
-    var ISNODE = false;
-
-    // Export the Underscore object for **CommonJS**, with backwards-compatibility
-    // for the old `require()` API. If we're not in CommonJS, add `_` to the
-    // global object.
+    
+    //CommonJS check
     if (typeof module !== 'undefined' && module.exports) {
             module.exports = _;
             ROOT._ = _;
             ISNODE = true;
-    } else {
+    }
+    //No CommonJS (browser)
+    else {
             ROOT._ = _;
     }
 })();
+//end Node.js or Browser Mode check//////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Tengu Loader
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 function Tengu() {
     
-
-
-    //turn args into array
+    //Get the arguments as an array
     var args = Array.prototype.slice.call(arguments),
-        //last arg is callback
+        //Get the callback (last arg)
         callback = args.pop(),
-        //modules as array or individual parameters
+        //If the first arg is an array, it's a list of modules
+        //if it's a string, then the args list is a list of modules
         modules = (args[0] && typeof args[0] === "string") ? args : args[0],
         i;
 
-    //make sure function is called as constructor
+    //Make sure this is being called as a constructor
     if (!(this instanceof Tengu)) {
         return new Tengu(modules, callback);
     }
 
-    //Properties of Tengu
-    this.a = 0;
-
-    //now add modules to the core 'this' object
-    //no modules or '*' mean 'use all modules'
+    //Add requested modules
+    //No modules in list or '*' means use all available modules
     if (!modules || modules === '*') {
         modules = [];
         for (i in Tengu.modules) {
@@ -63,27 +65,24 @@ function Tengu() {
         }
     }
 
-    //initialize the required modules
+    //Initialize requested modules
     for (i = 0; i < modules.length; i += 1) {
+        //Todo - at some point load each module's required modules
         Tengu.modules[modules[i]](this);
     }
 
-    //Note - at some point load each module's required modules
-
-    //call the callback
+    //Call the callback
     callback(this);
 }
 
+//Core Tengu methods (load without any modules)
 Tengu.protoype = {
-    name: "Tengu JS",
-    version: VERSION_NUMBER,
-    getName: function() {
-        return this.name;
-    },
     getVersion: function() {
         return VERSION_NUMBER;
     }
 };
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Modules
@@ -96,7 +95,7 @@ Tengu.modules = {};
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Tengu.modules.template = function(tengu) {
-    //Add methods and properties to tengu
+    //Add methods and properties to Tengu
 
     tengu.method = function() {}; //end method
 
