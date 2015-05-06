@@ -16,7 +16,7 @@ Include the file tengu.js with a script tag in your HTML:
 `<script src="tengu.js"></script>`
 
 ###Usage
-```
+```javascript
 var Tengu = require('./tengu.js'); // this line is not needed in the browser
 
 Tengu(function(T) {
@@ -101,7 +101,7 @@ Log message a fixed number of times (use in continuous loops to avoid msg spam)
 
 
 Example:
-```
+```javascript
 for (i = 0; i < 100000000000000000000000000000000; i++) { 
     T.logMultiple(5,i);
 }
@@ -137,7 +137,7 @@ Basically this is a generalized error handler.
 
 
 Example:
-```
+```javascript
 var f_error = function(){
 	consol.elog('Hi!');
 	//    ^ Whoopsie
