@@ -3,7 +3,7 @@
 
 General JS utility framework
 
-[Wiki](https://github.com/isaymatato/tengu/wiki)
+[Click here for full documentation](https://github.com/isaymatato/tengu/wiki)
 
 ##Overview
 
