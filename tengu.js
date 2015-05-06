@@ -4,7 +4,7 @@
  *  (c) 2014, Mateo Williford
  *
  */
-var VERSION_NUMBER = "4.00000";
+var VERSION_NUMBER = "4.00001";
 console.log("Loading Tengu v" + VERSION_NUMBER);
 
 
@@ -176,34 +176,6 @@ Tengu.modules.debug = function(tengu) {
         } else {
             return false;
         }
-    };
-
-    //Converts object or string to uri encoding, returns string
-    tengu.encodeURI = function(data){
-        var _encodeObj = function(obj){
-            var n,uri="";
-            for (n in obj) {
-              if (obj.hasOwnProperty(n)) {
-                uri += encodeURIComponent(n) + "=" + encodeURIComponent(obj[n]);
-                uri += "&";
-              }
-            }
-            //Remove last &
-            return uri.substring(0, uri.length-1);
-        };//end _encodeObj
-
-        var dtype = typeof data;
-        switch (dtype){
-            case "object": 
-                return _encodeObj(data);
-                break;
-            case "string":
-                return encodeURIComponent(data);
-                break;
-            default:
-                throw new Error("Tengu.encodeURI - Bad data type:",dtype);
-        }
-        return false;
     };
 
     //Safely wrap a function with error callbacks
@@ -1365,6 +1337,34 @@ Tengu.modules.util = function(tengu) {
         }
         
     }());
+
+    //Converts object or string to uri encoding, returns string
+    tengu.encodeURI = function(data){
+        var _encodeObj = function(obj){
+            var n,uri="";
+            for (n in obj) {
+              if (obj.hasOwnProperty(n)) {
+                uri += encodeURIComponent(n) + "=" + encodeURIComponent(obj[n]);
+                uri += "&";
+              }
+            }
+            //Remove last &
+            return uri.substring(0, uri.length-1);
+        };//end _encodeObj
+
+        var dtype = typeof data;
+        switch (dtype){
+            case "object": 
+                return _encodeObj(data);
+                break;
+            case "string":
+                return encodeURIComponent(data);
+                break;
+            default:
+                throw new Error("Tengu.encodeURI - Bad data type:",dtype);
+        }
+        return false;
+    };
 
     //Usage:  a = T.argArray(arguments);
     tengu.argArray = function(a) {
