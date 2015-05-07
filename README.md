@@ -9,10 +9,10 @@ General JS utility framework
 
 ###Installation
 
-#####In node
-Include the file tengu.js in your project's root directory
+#####In node<br>
+Include the file tengu.js in your project's root directory<br>
 
-#####In the browser
+#####In the browser<br>
 Include the file tengu.js with a script tag in your HTML:
 
 `<script src="tengu.js"></script>`
