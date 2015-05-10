@@ -4,7 +4,7 @@
  *  (c) 2014, Mateo Williford
  *
  */
-var VERSION_NUMBER = "4.00001";
+var VERSION_NUMBER = "4.00010"; 
 console.log("Loading Tengu v" + VERSION_NUMBER);
 
 
@@ -690,6 +690,8 @@ Tengu.modules.math = function(tengu) {
         return (Math.floor(x / base) * base);
     };
 
+    tengu.setNumberResolution = tengu.rez;
+
     //Check if number is in between two other numbers
     tengu.nInRange = function(x, min, max) {
         return (x - min) * (x - max) < 0;
@@ -803,11 +805,11 @@ Tengu.modules.math = function(tengu) {
     }; //End bitArrayToByte
 
     //Byte to 8bit bool array
-    tengu.byteToBitArray = function(byte, bool_littleEndian) {
+    tengu.byteToBitArray = function(b, bool_littleEndian) {
         var ba = [],
             i;
         for (i = 0; i < 8; i += 1) {
-            ba[i] = (a >> i) & 1;
+            ba[i] = (b >> i) & 1;
         }
         if (bool_littleEndian) {
             ba.reverse();
@@ -1314,100 +1316,17 @@ Tengu.modules.random = function(tengu) {
     };
 };
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// Utility Module
+// Typecheck Module
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Tengu.modules.util = function(tengu) {
-    //Utility Functions (misc)
-    var WORKING_DIR = (function() {
-        if (typeof window != 'undefined'){
-            var wd = window.location.pathname,
-                wi = wd.lastIndexOf("/") + 1;
-            wd = wd.slice(0, wi);
-            return wd;    
-        }
-        if (ISNODE){
-            var path = require('path'),
-                wd = path.dirname( process.execPath ),
-                wi = wd.lastIndexOf("/") + 1;
-            wd = wd.slice(0, wi);
-            return wd;
-        }
-        
-    }());
-
-    //Converts object or string to uri encoding, returns string
-    tengu.encodeURI = function(data){
-        var _encodeObj = function(obj){
-            var n,uri="";
-            for (n in obj) {
-              if (obj.hasOwnProperty(n)) {
-                uri += encodeURIComponent(n) + "=" + encodeURIComponent(obj[n]);
-                uri += "&";
-              }
-            }
-            //Remove last &
-            return uri.substring(0, uri.length-1);
-        };//end _encodeObj
-
-        var dtype = typeof data;
-        switch (dtype){
-            case "object": 
-                return _encodeObj(data);
-                break;
-            case "string":
-                return encodeURIComponent(data);
-                break;
-            default:
-                throw new Error("Tengu.encodeURI - Bad data type:",dtype);
-        }
-        return false;
-    };
-
-    //Usage:  a = T.argArray(arguments);
-    tengu.argArray = function(a) {
-        return Array.prototype.slice.call(a, 0);
-    };
-
-    //Get working directory
-    tengu.getWorkingDir = function() {
-        return WORKING_DIR;
-    };
-
-    //Return float of string version # (ie 0.80.10.22)
-    tengu.versionToFloat = function(str) {
-        var n = str.indexOf("."),
-            w = str.slice(0, n).replace(/\D/g, ""),
-            f = str.slice(n).replace(/\D/g, ""),
-            str2 = w + "." + f;
-
-        return parseFloat(str2);
-    };
-
-    /**
-     * Returns true of character is uppercase
-     * @param {String} char		Character to be evaluated
-     * @return {Boolean}       	True if its a string
-     */
-    tengu.isUpperCase = function(char) {
-        return char == char.toUpperCase();
-    };
-
-    /**
-     * Returns true of character is lowercase
-     * @param {String} char		Character to be evaluated
-     * @return {Boolean}       	True if its a string
-     */
-    tengu.isLowerCase = function(char) {
-        return char == char.toLowerCase();
-    };
+Tengu.modules.typecheck = function(tengu) {
+    //Methods for checking data type
 
     /**
      * Returns true of object is a string
-     * @param {Object} obj		Object to be evaluated
-     * @return {Boolean}       	True if its a string
+     * @param {Object} obj      Object to be evaluated
+     * @return {Boolean}        True if its a string
      */
     tengu.isString = function(obj) {
         if (!obj) {return false;}
@@ -1462,6 +1381,99 @@ Tengu.modules.util = function(tengu) {
         }
         return number % 1 == 0;
     };
+
+}; //end module
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Utility Module
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Tengu.modules.util = function(tengu) {
+    //Utility Functions (misc)
+    var WORKING_DIR = (function() {
+        if (typeof window != 'undefined'){
+            var wd = window.location.pathname,
+                wi = wd.lastIndexOf("/") + 1;
+            wd = wd.slice(0, wi);
+            return wd;    
+        }
+        if (ISNODE){
+            var path = require('path'),
+                wd = path.dirname( process.execPath ),
+                wi = wd.lastIndexOf("/") + 1;
+            wd = wd.slice(0, wi);
+            return wd;
+        }
+        
+    }());
+
+    //Converts object or string to uri encoding, returns string
+    tengu.encodeURI = function(data){
+        var _encodeObj = function(obj){
+            var n,uri="";
+            for (n in obj) {
+              if (obj.hasOwnProperty(n)) {
+                uri += encodeURIComponent(n) + "=" + encodeURIComponent(obj[n]);
+                uri += "&";
+              }
+            }
+            //Remove last &
+            return uri.substring(0, uri.length-1);
+        };//end _encodeObj
+
+        var dtype = typeof data;
+        switch (dtype){
+            case "object": 
+                return _encodeObj(data);
+                break;
+            case "string":
+                return encodeURIComponent(data);
+                break;
+            default:
+                throw new Error("Tengu.encodeURI - Bad data type:",dtype);
+        }
+        return false;
+    };
+
+    //Usage:  a = T.argArray(arguments);
+    tengu.argArray = function() {
+        return Array.prototype.slice.call(arguments);
+    };
+
+    //Get working directory
+    tengu.getWorkingDir = function() {
+        return WORKING_DIR;
+    };
+
+    //Return float of string version # (ie 0.80.10.22)
+    tengu.versionToFloat = function(str) {
+        var n = str.indexOf("."),
+            w = str.slice(0, n).replace(/\D/g, ""),
+            f = str.slice(n).replace(/\D/g, ""),
+            str2 = w + "." + f;
+
+        return parseFloat(str2);
+    };
+
+    /**
+     * Returns true of character is uppercase
+     * @param {String} char		Character to be evaluated
+     * @return {Boolean}       	True if its a string
+     */
+    tengu.isUpperCase = function(char) {
+        return char == char.toUpperCase();
+    };
+
+    /**
+     * Returns true of character is lowercase
+     * @param {String} char		Character to be evaluated
+     * @return {Boolean}       	True if its a string
+     */
+    tengu.isLowerCase = function(char) {
+        return char == char.toLowerCase();
+    };
+
 
     //Shuffles an array and returns shuffled
     tengu.shuffle = function(array) {
